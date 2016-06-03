@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -ex
 
 if [ ! -d "/opt/koji/.git" ]; then
 	# allow building from other locations / branches.

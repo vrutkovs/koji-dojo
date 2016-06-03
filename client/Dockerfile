@@ -12,12 +12,12 @@ RUN yum -y update && \
         openssh-clients \
     ; yum clean all
 
-ADD bin/ /usr/local/bin/
-
-RUN chmod +x /usr/local/bin/*
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 RUN mkdir /var/run/sshd
 RUN echo 'root:mypassword' | chpasswd
+
+ADD bin/ /usr/local/bin/
+RUN chmod +x /usr/local/bin/*
 
 ENTRYPOINT /usr/local/bin/entrypoint.sh

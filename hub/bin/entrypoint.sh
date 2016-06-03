@@ -8,6 +8,8 @@ if grep -q -v "koji-db" /etc/hosts; then
     echo ${KOJI_DB_IP} koji-db >> /etc/hosts
 fi
 
+set -ex
+
 build-koji.sh
 setup.sh
 

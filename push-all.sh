@@ -1,7 +1,11 @@
 #!/bin/bash
 
 docker login -u buildchimp
-for c in docker.io/buildchimp/koji-dojo-hub:dev docker.io/buildchimp/koji-dojo-client:dev docker.io/buildchimp/koji-dojo-builder:dev; do
-	echo "Pushing: $c"
-	docker push $c
+for c in vrutkovs/koji-dojo-hub vrutkovs/koji-dojo-client; do
+	dev="${c}:dev"
+	echo "Renaming $c with :dev tag"
+	docker tag -f $c $dev
+
+	echo "Pushing: $dev"
+	docker push $dev
 done

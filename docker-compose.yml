@@ -8,7 +8,7 @@ koji-db:
         - POSTGRES_PASSWORD=mypassword
 
 koji-hub:
-    build: hub
+    image: "vrutkovs/koji-dojo-hub"
     hostname: koji-hub
     volumes:
         - /opt/koji:/opt/koji:rw,z
@@ -17,10 +17,9 @@ koji-hub:
         - koji-db
 
 koji-client:
-    build: client
+    image: "vrutkovs/koji-dojo-client"
     hostname: koji-client
     volumes_from:
         - koji-hub:rw
     links:
         - koji-hub
-

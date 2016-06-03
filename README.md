@@ -48,7 +48,7 @@ User accounts and source build aside, this hub image also exposes the `/opt/koji
 You can also use the hub container from your localhost by using a manual volume mount from the localhost directory structure into the hub container:
 
 ```
-docker run -d --name=koji=hub -v /opt/koji-clients:/opt/koji-clients docker.io/buildchimp/koji-hub
+docker run -d --name=koji=hub -v /opt/koji-clients:/opt/koji-clients vrutkovs/koji-hub
 ```
 
 Now, if you have the Koji client RPM installed locally, you can start using the hub container by simply using one of the generated configs:

@@ -18,8 +18,10 @@ RUN yum -y update && \
         openssh-clients \
         wget \
         createrepo \
-    ; yum clean all
+        python-pip \
+    && yum clean all
 
+ADD etc/ /etc/
 ADD bin/ /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/*

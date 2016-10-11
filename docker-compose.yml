@@ -13,12 +13,25 @@ koji-hub:
     volumes:
         - /opt/koji:/opt/koji:rw,z
         - /opt/koji-clients:/opt/koji-clients:rw,z
+        - /mnt/koji:/mnt/koji:rw,z
+    ports:
+        - 80:80
+        - 443:443
     links:
         - koji-db
 
-koji-client:
-    image: "vrutkovs/koji-dojo-client"
-    hostname: koji-client
+# koji-client:
+#     image: "vrutkovs/koji-dojo-client"
+#     hostname: koji-client
+#     volumes_from:
+#         - koji-hub:rw
+#     links:
+#         - koji-hub
+
+koji-builder:
+    image: "vrutkovs/koji-dojo-builder"
+    hostname: koji-builder
+    entrypoint: /usr/local/bin/entrypoint.sh
     volumes_from:
         - koji-hub:rw
     links:

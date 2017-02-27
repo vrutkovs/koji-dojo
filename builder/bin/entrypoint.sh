@@ -70,6 +70,7 @@ install_kcb() {
 }
 
 update_buildroot(){
+    BUILDROOT_INITIAL_IMAGE=${BUILDROOT_INITIAL_IMAGE:-}
     if [ -n "${BUILDROOT_INITIAL_IMAGE}" ]; then
       sed -i "s,build_image = .*,build_image = $BUILDROOT_INITIAL_IMAGE,g" /etc/osbs.conf
     fi
@@ -116,7 +117,7 @@ Plugins = builder_containerbuild
 allowed_scms=pkgs.devel.redhat.com:/*:no git.engineering.redhat.com:/*:no
 
 EOF
-    diff /etc/kojid/kojid.conf.example /etc/kojid/kojid.conf
+    #diff /etc/kojid/kojid.conf.example /etc/kojid/kojid.conf
 }
 
 
@@ -138,7 +139,7 @@ start_ssh() {
 start_builder() {
     koji -c /opt/koji-clients/kojiadmin/config add-host-to-channel kojibuilder container --new || true
 
-    local RUN_IN_FOREGROUND=$1
+    local RUN_IN_FOREGROUND=${1:-}
     echo "Starting koji builder on ${IP}"
     if [ "$RUN_IN_FOREGROUND" == "RUN_IN_FOREGROUND" ]; then
         /usr/sbin/kojid -d -v -f --force-lock
@@ -157,5 +158,5 @@ configure_builder
 install_osbs_client
 install_kcb
 update_buildroot
-start_ssh
+#start_ssh
 start_builder "RUN_IN_FOREGROUND"

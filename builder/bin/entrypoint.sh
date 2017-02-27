@@ -30,9 +30,9 @@ install_builder() {
 configure_builder() {
     echo "Configure builder to connect to koji-hub"
 
-    wget http://koji-hub/clients/kojibuilder/client.crt -O /etc/kojid/kojibuilder.crt
-    wget http://koji-hub/clients/kojibuilder/clientca.crt -O /etc/kojid/koji_client_ca_cert.crt
-    wget http://koji-hub/clients/kojibuilder/serverca.crt -O /etc/kojid/koji_server_ca_cert.crt
+    cp /opt/koji-clients/kojibuilder/client.crt /etc/kojid/kojibuilder.crt
+    cp /opt/koji-clients/kojibuilder/clientca.crt /etc/kojid/koji_client_ca_cert.crt
+    cp /opt/koji-clients/kojibuilder/serverca.crt /etc/kojid/koji_server_ca_cert.crt
 
 
 install_osbs_client() {

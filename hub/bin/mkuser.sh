@@ -37,7 +37,7 @@ user=$1
 password="mypassword"
 conf=confs/${user}-ssl.cnf
 
-if [! -e /etc/pki/koji/certs/${user}.crt ]; then
+if [ ! -e /etc/pki/koji/certs/${user}.crt ]; then
 
 	openssl genrsa -out private/${user}.key 2048
 	cp ssl.cnf $conf

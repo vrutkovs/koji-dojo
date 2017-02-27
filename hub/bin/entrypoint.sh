@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -ex
 
 # add koji-db to hosts if not present
 KOJI_DB="${KOJI_DB:-koji-db}"

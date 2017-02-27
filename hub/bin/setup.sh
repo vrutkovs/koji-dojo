@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -ex
 
 create_koji_folders() {
 	echo "Create Koji folders"

@@ -4,8 +4,6 @@ set -x
 
 psql="psql --host=koji-db --username=koji koji"
 
-IP=$(find-ip.py || "koji-hub.local")
-
 user=$1
 kind=$2
 
@@ -70,22 +68,22 @@ fi
 
 cat <<EOF > $client/config
 [koji]
-server = https://${IP}/kojihub
+server = https://koji-hub/kojihub
 authtype = ssl
 cert = ${client}/client.crt
 ca = ${client}/clientca.crt
 serverca = ${client}/serverca.crt
-weburl = https://${IP}/koji
-topurl = https://${IP}/kojifiles
+weburl = https://koji-hub/koji
+topurl = https://koji-hub/kojifiles
 EOF
 
 cat <<EOF > $client/config.json
 {
-	"url": "https://${IP}/kojihub",
-	"crt-url": "https://${IP}/koji-clients/${user}/client.crt",
-	"pem-url": "https://${IP}/koji-clients/${user}/client.pem",
-	"ca-url": "https://${IP}/koji-clients/${user}/clientca.crt",
-	"serverca-url": "https://${IP}/koji-clients/${user}/serverca.crt",
+	"url": "https://koji-hub/kojihub",
+	"crt-url": "https://koji-hub/koji-clients/${user}/client.crt",
+	"pem-url": "https://koji-hub/koji-clients/${user}/client.pem",
+	"ca-url": "https://koji-hub/koji-clients/${user}/clientca.crt",
+	"serverca-url": "https://koji-hub/koji-clients/${user}/serverca.crt",
 	"crt": "${client}/client.crt",
 	"pem": "${client}/client.pem",
 	"ca": "${client}/clientca.crt",

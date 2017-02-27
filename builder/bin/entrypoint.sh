@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eux
 
 wait_for_koji_hub_to_start() {
     while true; do
@@ -45,6 +46,7 @@ install_osbs_client() {
     cd ~/osbs-client
     git checkout $OSBS_GITBRANCH
     git rev-parse HEAD
+    yum install -y python-pip
     pip install -U setuptools
     pip install -r requirements.txt
     python setup.py install

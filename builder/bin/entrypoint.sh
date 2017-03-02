@@ -30,6 +30,7 @@ install_builder() {
 configure_builder() {
     echo "Configure builder to connect to koji-hub"
 
+    mkdir -p /etc/kojid
     cp /opt/koji-clients/kojibuilder/client.crt /etc/kojid/kojibuilder.crt
     cp /opt/koji-clients/kojibuilder/clientca.crt /etc/kojid/koji_client_ca_cert.crt
     cp /opt/koji-clients/kojibuilder/serverca.crt /etc/kojid/koji_server_ca_cert.crt

@@ -87,7 +87,7 @@ sed -i.bak '/allowed_scms=/d' /etc/kojid/kojid.conf
     cat <<EOF >> /etc/kojid/kojid.conf
 
 ; The URL for the xmlrpc server
-server=http://koji-hub/kojihub
+server=https://koji-hub/kojihub
 
 ; the username has to be the same as what you used with add-host
 ; in this example follow as below

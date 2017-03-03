@@ -47,13 +47,16 @@ generate_ssl_certificates() {
 	fi
  
 	cat ssl.cnf | sed "s/email\:move/${CA_SAN}/"> $conf
-	#cp ssl.cnf $conf
+	cp ssl.cnf $conf
 
 	openssl genrsa -out private/koji_ca_cert.key 2048
 	openssl req -config $conf -new -x509 -subj "/C=US/ST=Drunken/L=Bed/O=IT/CN=koji-hub" -days 3650 -key private/koji_ca_cert.key -out koji_ca_cert.crt -extensions v3_ca
 
 	cp private/koji_ca_cert.key private/kojihub.key
 	cp koji_ca_cert.crt certs/kojihub.crt
+
+	mkdir -p /opt/koji/pki
+	cp -r /etc/pki/koji/* /opt/koji/pki
 
 	mkuser.sh kojiweb admin
 	mkuser.sh kojiadmin admin
@@ -92,7 +95,14 @@ if [ -f /etc/pki/koji/certs/kojihub.crt ]
 then
     echo "Ssl certificates already generated"
 else
-	generate_ssl_certificates
+	if [ -f /opt/koji/pki/certs/kojihub.crt ]
+	then
+		echo "Using stored certificates"
+		mkdir -p /etc/pki/koji
+		cp -r /opt/koji/pki/* /etc/pki/koji
+	else
+		generate_ssl_certificates
+	fi
 fi
 
 if [ -f /root/.koji/config ]

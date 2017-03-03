@@ -24,10 +24,6 @@ make test-rpm
 
 yum -y localinstall noarch/koji-hub*.rpm noarch/koji-1.*.rpm noarch/koji-web*.rpm
 
-echo "Sleep 10s in case database container is still booting..."
-sleep 10
-echo "...resuming install"
-
 psql="psql --host=koji-db --username=koji koji"
 
 cat /opt/koji/docs/schema.sql | $psql

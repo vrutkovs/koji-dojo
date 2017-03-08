@@ -36,6 +36,7 @@ caname="koji"
 user=$1
 password="mypassword"
 conf=confs/${user}-ssl.cnf
+client=/opt/koji-clients/${user}
 
 if [ ! -e /etc/pki/koji/certs/${user}.crt ]; then
 
@@ -64,8 +65,6 @@ if [ ! -e /etc/pki/koji/certs/${user}.crt ]; then
 		openssl pkcs12 -clcerts -passin "pass:${password}" -passout "pass:${password}" -in certs/${user}_browser_cert.p12 -inkey private/${user}.key -out certs/${user}.pem
 
 		cat certs/${user}-crtonly.crt private/${user}.key > certs/${user}.crt
-
-		client=/opt/koji-clients/${user}
 
 		rm -rf $client
 		mkdir -p $client

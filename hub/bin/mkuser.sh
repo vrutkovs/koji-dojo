@@ -39,31 +39,42 @@ conf=confs/${user}-ssl.cnf
 
 if [ ! -e /etc/pki/koji/certs/${user}.crt ]; then
 
-	openssl genrsa -out private/${user}.key 2048
-	cp ssl.cnf $conf
+	if [ -f /opt/koji-clients/${user}/client.crt ]
+	then
+		echo "Using stored certificates"
+		mkdir -p /etc/pki/koji/certs/
+		cp /opt/koji-clients/${user}/client.crt /etc/pki/koji/certs/${user}.crt
+		cp /opt/koji-clients/${user}/client.pem /etc/pki/koji/certs/${user}.pem
+		cp /opt/koji-clients/${user}/clientca.crt /etc/pki/koji/certs/koji_ca_cert.crt
+		cp /opt/koji-clients/${user}/serverca.crt /etc/pki/koji/certs/koji_ca_cert.crt
+	else
 
-	openssl req -config $conf -new -nodes -out certs/${user}.csr -key private/${user}.key \
-	            -subj "/C=US/ST=Drunken/L=Bed/O=IT/CN=${user}/emailAddress=${user}@kojihub.local"
+		openssl genrsa -out private/${user}.key 2048
+		cp ssl.cnf $conf
 
-	openssl ca -config $conf -batch -keyfile private/${caname}_ca_cert.key -cert ${caname}_ca_cert.crt \
-			   -out certs/${user}-crtonly.crt -outdir certs -infiles certs/${user}.csr
+		openssl req -config $conf -new -nodes -out certs/${user}.csr -key private/${user}.key \
+		            -subj "/C=US/ST=Drunken/L=Bed/O=IT/CN=${user}/emailAddress=${user}@kojihub.local"
 
-	openssl pkcs12 -export -inkey private/${user}.key -passout "pass:${password}" -in certs/${user}-crtonly.crt -certfile ${caname}_ca_cert.crt -CAfile ${caname}_ca_cert.crt -chain -clcerts \
-				   -out certs/${user}_browser_cert.p12
+		openssl ca -config $conf -batch -keyfile private/${caname}_ca_cert.key -cert ${caname}_ca_cert.crt \
+				   -out certs/${user}-crtonly.crt -outdir certs -infiles certs/${user}.csr
 
-	openssl pkcs12 -clcerts -passin "pass:${password}" -passout "pass:${password}" -in certs/${user}_browser_cert.p12 -inkey private/${user}.key -out certs/${user}.pem
+		openssl pkcs12 -export -inkey private/${user}.key -passout "pass:${password}" -in certs/${user}-crtonly.crt -certfile ${caname}_ca_cert.crt -CAfile ${caname}_ca_cert.crt -chain -clcerts \
+					   -out certs/${user}_browser_cert.p12
 
-	cat certs/${user}-crtonly.crt private/${user}.key > certs/${user}.crt
+		openssl pkcs12 -clcerts -passin "pass:${password}" -passout "pass:${password}" -in certs/${user}_browser_cert.p12 -inkey private/${user}.key -out certs/${user}.pem
 
-	client=/opt/koji-clients/${user}
+		cat certs/${user}-crtonly.crt private/${user}.key > certs/${user}.crt
 
-	rm -rf $client
-	mkdir -p $client
-	cp /etc/pki/koji/certs/${user}.crt $client/client.crt   # NOTE: It is IMPORTANT you use the aggregated form
-	cp /etc/pki/koji/certs/${user}.pem $client/client.pem
-	cp /etc/pki/koji/certs/${user}_browser_cert.p12 $client/client_browser_cert.p12
-	cp /etc/pki/koji/koji_ca_cert.crt $client/clientca.crt
-	cp /etc/pki/koji/koji_ca_cert.crt $client/serverca.crt
+		client=/opt/koji-clients/${user}
+
+		rm -rf $client
+		mkdir -p $client
+		cp /etc/pki/koji/certs/${user}.crt $client/client.crt   # NOTE: It is IMPORTANT you use the aggregated form
+		cp /etc/pki/koji/certs/${user}.pem $client/client.pem
+		cp /etc/pki/koji/certs/${user}_browser_cert.p12 $client/client_browser_cert.p12
+		cp /etc/pki/koji/koji_ca_cert.crt $client/clientca.crt
+		cp /etc/pki/koji/koji_ca_cert.crt $client/serverca.crt
+	fi
 fi
 
 cat <<EOF > $client/config

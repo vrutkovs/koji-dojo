@@ -54,7 +54,9 @@ generate_ssl_certificates() {
 
 	cp private/koji_ca_cert.key private/kojihub.key
 	cp koji_ca_cert.crt certs/kojihub.crt
+}
 
+create_users() {
 	mkdir -p /opt/koji/pki
 	cp -r /etc/pki/koji/* /opt/koji/pki
 
@@ -64,7 +66,6 @@ generate_ssl_certificates() {
 	mkuser.sh testuser
 
 	mkuser.sh kojibuilder builder
-
 
 	chown -R nobody:nobody /opt/koji-clients
 }
@@ -104,6 +105,8 @@ else
 		generate_ssl_certificates
 	fi
 fi
+
+create_users
 
 if [ -f /root/.koji/config ]
 then

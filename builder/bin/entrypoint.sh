@@ -115,7 +115,7 @@ serverca = /etc/kojid/koji_server_ca_cert.crt
 
 PluginPath = /usr/lib/koji-builder-plugins
 Plugins = builder_containerbuild
-allowed_scms=pkgs.devel.redhat.com:/*:no git.engineering.redhat.com:/*:no
+allowed_scms=pkgs.devel.redhat.com:/*:no git.engineering.redhat.com:/*:no dist-git-qa.app.eng.bos.redhat.com:/*:no
 
 EOF
     #diff /etc/kojid/kojid.conf.example /etc/kojid/kojid.conf

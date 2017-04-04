@@ -35,6 +35,11 @@ configure_builder() {
     cp /opt/koji-clients/kojibuilder/clientca.crt /etc/kojid/koji_client_ca_cert.crt
     cp /opt/koji-clients/kojibuilder/serverca.crt /etc/kojid/koji_server_ca_cert.crt
 
+install_osbs_updates() {
+    curl -kL https://copr.devel.redhat.com/coprs/vrutkovs/osbs/repo/rhel-6/vrutkovs-osbs-rhel-6.repo -o /etc/yum.repos.d/osbs-updates.repo
+    echo -e "\nsslverify=0" >> /etc/yum.repos.d/osbs-updates.repo
+    yum install -y osbs-client koji-containerbuild koji-containerbuild-builder
+}
 
 install_osbs_client() {
     echo "Installing OSBS Client"
@@ -156,8 +161,12 @@ IP=$(find-ip.py)
 wait_for_koji_hub_to_start
 install_builder
 configure_builder
-install_osbs_client
-install_kcb
+if [ -n "${KCB_REMOTE-}" ]; then
+    install_osbs_client
+    install_kcb
+else
+    install_osbs_updates
+fi
 update_buildroot
 #start_ssh
 start_builder "RUN_IN_FOREGROUND"

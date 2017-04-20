@@ -41,6 +41,40 @@ install_osbs_updates() {
     yum install -y osbs-client koji-containerbuild koji-containerbuild-builder
 }
 
+install_osbs_client() {
+    echo "Installing OSBS Client"
+
+    OSBS_SOURCE=${OSBS_REMOTE:-https://github.com/projectatomic/osbs-client.git}
+    OSBS_GITBRANCH=${OSBS_BRANCH:-master}
+
+    rm -rf ~/osbs-client
+    git clone $OSBS_SOURCE ~/osbs-client
+    cd ~/osbs-client
+    git checkout $OSBS_GITBRANCH
+    git rev-parse HEAD
+    yum install -y python-pip
+    pip install -U setuptools
+    pip install -r requirements.txt
+    python setup.py install
+    mkdir -p /usr/share/osbs
+    cp inputs/* /usr/share/osbs
+}
+
+install_kcb() {
+    KCB_SOURCE=${KCB_REMOTE:-https://github.com/release-engineering/koji-containerbuild.git}
+    KCB_GITBRANCH=${KCB_BRANCH:-master}
+
+    rm -rf ~/koji-containerbuild
+    git clone $KCB_SOURCE ~/koji-containerbuild
+    cd ~/koji-containerbuild
+    git checkout $KCB_GITBRANCH
+    git rev-parse HEAD
+    # Remove install_requires
+    sed -i -e '/"koji",/d' -e '/"osbs",/d' setup.py
+    python setup.py install
+    cp koji_containerbuild/plugins/builder_containerbuild.py /usr/lib/koji-builder-plugins/builder_containerbuild.py
+}
+
 update_buildroot(){
     BUILDROOT_INITIAL_IMAGE=${BUILDROOT_INITIAL_IMAGE:-}
     if [ -n "${BUILDROOT_INITIAL_IMAGE}" ]; then
@@ -127,7 +161,12 @@ IP=$(find-ip.py)
 wait_for_koji_hub_to_start
 install_builder
 configure_builder
-install_osbs_updates
+if [ -n "${KCB_REMOTE-}" ]; then
+    install_osbs_client
+    install_kcb
+else
+    install_osbs_updates
+fi
 update_buildroot
 #start_ssh
 start_builder "RUN_IN_FOREGROUND"

@@ -148,7 +148,7 @@ start_builder() {
     local RUN_IN_FOREGROUND=${1:-}
     echo "Starting koji builder on ${IP}"
     if [ "$RUN_IN_FOREGROUND" == "RUN_IN_FOREGROUND" ]; then
-        /usr/sbin/kojid -d -v -f --force-lock
+        /usr/sbin/kojid -v -f --force-lock
     else
         #/etc/init.d/kojid start
 	/usr/sbin/kojid

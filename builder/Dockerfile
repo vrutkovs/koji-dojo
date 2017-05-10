@@ -16,6 +16,7 @@ RUN yum -y update && \
         wget \
         createrepo \
         python-pip \
+        rsync \
     && yum clean all
 
 ADD etc/ /etc/

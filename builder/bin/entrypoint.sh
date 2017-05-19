@@ -76,7 +76,7 @@ install_kcb() {
 }
 
 update_buildroot(){
-    if [ -d /opt/osbs/osbs.conf ]; then
+    if [ -f /opt/osbs/osbs.conf ]; then
       cp /opt/osbs/osbs.conf /etc/osbs.conf
     fi
 

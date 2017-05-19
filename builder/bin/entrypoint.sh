@@ -76,6 +76,10 @@ install_kcb() {
 }
 
 update_buildroot(){
+    if [ -d /opt/osbs/osbs.conf ]; then
+      cp /opt/osbs/osbs.conf /etc/osbs.conf
+    fi
+
     BUILDROOT_INITIAL_IMAGE=${BUILDROOT_INITIAL_IMAGE:-}
     if [ -n "${BUILDROOT_INITIAL_IMAGE}" ]; then
       sed -i "s,build_image = .*,build_image = $BUILDROOT_INITIAL_IMAGE,g" /etc/osbs.conf

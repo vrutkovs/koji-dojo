@@ -129,6 +129,9 @@ allowed_scms=pkgs.devel.redhat.com:/*:no git.engineering.redhat.com:/*:no dist-g
 
 EOF
     #diff /etc/kojid/kojid.conf.example /etc/kojid/kojid.conf
+
+    alias kojitest="koji -c /opt/koji-clients/kojiadmin/config"
+    kojitest edit-host --capacity=${CAPACITY:8} kojibuilder
 }
 
 

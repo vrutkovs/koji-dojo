@@ -76,21 +76,6 @@ EOF
 }
 
 
-start_ssh() {
-    local RUN_IN_FOREGROUND=$1
-    echo "You can connect directly by running"
-    echo "      docker exec -ti koji-hub /bin/bash"
-    echo "Starting ssh on ${IP} (use ssh root@${IP} with password mypassword"
-    if [ "$RUN_IN_FOREGROUND" == "RUN_IN_FOREGROUND" ]; then
-        ssh-keygen -t rsa -N '' -f /etc/ssh/ssh_host_rsa_key
-        ssh-keygen -t dsa -N '' -f /etc/ssh/ssh_host_dsa_key
-        /usr/sbin/sshd -D
-    else
-#        /etc/init.d/sshd start
-        /usr/sbin/sshd
-    fi
-}
-
 start_builder() {
     local RUN_IN_FOREGROUND=$1
     echo "Starting koji builder on ${IP}"
@@ -115,5 +100,4 @@ fi
 wait_for_koji_hub_to_start
 install_builder
 configure_builder
-start_ssh
 start_builder "RUN_IN_FOREGROUND"

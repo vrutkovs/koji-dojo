@@ -73,6 +73,9 @@ serverca = /etc/kojid/koji_server_ca_cert.crt
 
 EOF
     diff /etc/kojid/kojid.conf.example /etc/kojid/kojid.conf
+
+    alias kojitest="koji -c /opt/koji-clients/kojiadmin/config"
+    kojitest edit-host --capacity=${CAPACITY:8} kojibuilder
 }
 
 

@@ -98,7 +98,7 @@ start_builder() {
         /usr/sbin/kojid -d -v -f --force-lock
     else
         #/etc/init.d/kojid start
-	/usr/sbin/kojid
+        /usr/sbin/kojid
     fi
 }
 

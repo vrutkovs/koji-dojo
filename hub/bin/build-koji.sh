@@ -22,7 +22,7 @@ cd /opt/koji
 rm -rf noarch
 make test-rpm
 
-yum -y localinstall noarch/koji-hub*.rpm noarch/koji-1.*.rpm noarch/koji-web*.rpm
+yum -y localinstall noarch/python2-koji*.rpm noarch/koji-hub*.rpm noarch/koji-1.*.rpm noarch/koji-web*.rpm
 
 psql="psql --host=koji-db --username=koji koji"
 

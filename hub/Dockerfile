@@ -39,6 +39,7 @@ RUN yum -y update && \
         python-coverage \
         openssh-server \
         wget \
+        python2-devel \
     ; yum clean all
 
 ADD etc/ /etc/

@@ -130,7 +130,8 @@ allowed_scms=pkgs.devel.redhat.com:/*:no git.engineering.redhat.com:/*:no dist-g
 EOF
     #diff /etc/kojid/kojid.conf.example /etc/kojid/kojid.conf
 
-    koji -c /opt/koji-clients/kojiadmin/config edit-host --capacity=${CAPACITY:8} kojibuilder
+    CAPACITY=${CAPACITY:8.0}
+    koji -c /opt/koji-clients/kojiadmin/config edit-host --capacity=$CAPACITY kojibuilder
 }
 
 

@@ -35,6 +35,7 @@ configure_builder() {
     cp /opt/koji-clients/kojibuilder/client.crt /etc/kojid/kojibuilder.crt
     cp /opt/koji-clients/kojibuilder/clientca.crt /etc/kojid/koji_client_ca_cert.crt
     cp /opt/koji-clients/kojibuilder/serverca.crt /etc/kojid/koji_server_ca_cert.crt
+}
 
 install_osbs_updates() {
     curl -kL https://copr.devel.redhat.com/coprs/vrutkovs/osbs/repo/rhel-6/vrutkovs-osbs-rhel-6.repo -o /etc/yum.repos.d/osbs-updates.repo
@@ -159,7 +160,7 @@ start_builder() {
         /usr/sbin/kojid -d -v -f --force-lock
     else
         #/etc/init.d/kojid start
-	/usr/sbin/kojid
+        /usr/sbin/kojid
     fi
 }
 

@@ -86,13 +86,16 @@ update_buildroot(){
       sed -i "s,build_image = .*,build_image = $BUILDROOT_INITIAL_IMAGE,g" /etc/osbs.conf
     fi
 
+    CAPACITY=${CAPACITY:8.0}
+    koji -c /opt/koji-clients/kojiadmin/config edit-host --capacity=$CAPACITY kojibuilder
 }
 
-# delete line starting with allowed_scms=
-cp /etc/kojid/kojid.conf /etc/kojid/kojid.conf.example
-sed -i.bak '/topurl=/d' /etc/kojid/kojid.conf
-sed -i.bak '/server=/d' /etc/kojid/kojid.conf
-sed -i.bak '/allowed_scms=/d' /etc/kojid/kojid.conf
+update_kojid(){
+    # delete line starting with allowed_scms=
+    cp /etc/kojid/kojid.conf /etc/kojid/kojid.conf.example
+    sed -i.bak '/topurl=/d' /etc/kojid/kojid.conf
+    sed -i.bak '/server=/d' /etc/kojid/kojid.conf
+    sed -i.bak '/allowed_scms=/d' /etc/kojid/kojid.conf
 
     cat <<EOF >> /etc/kojid/kojid.conf
 
@@ -129,9 +132,6 @@ allowed_scms=pkgs.devel.redhat.com:/*:no git.engineering.redhat.com:/*:no dist-g
 
 EOF
     #diff /etc/kojid/kojid.conf.example /etc/kojid/kojid.conf
-
-    CAPACITY=${CAPACITY:8.0}
-    koji -c /opt/koji-clients/kojiadmin/config edit-host --capacity=$CAPACITY kojibuilder
 }
 
 
@@ -176,5 +176,6 @@ else
     install_osbs_updates
 fi
 update_buildroot
+update_kojid
 #start_ssh
 start_builder "RUN_IN_FOREGROUND"

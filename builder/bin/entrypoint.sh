@@ -60,6 +60,8 @@ install_osbs_client() {
     python setup.py install
     mkdir -p /usr/share/osbs
     cp inputs/* /usr/share/osbs
+    sed -i "s/koji_parent/koji_parent-disabled/g" /usr/share/osbs/prod_inner.json
+    sed -i "s/koji_parent/koji_parent-disabled/g" /usr/share/osbs/orchestrator*
 }
 
 install_kcb() {

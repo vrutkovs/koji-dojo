@@ -88,7 +88,7 @@ update_buildroot(){
       sed -i "s,build_image = .*,build_image = $BUILDROOT_INITIAL_IMAGE,g" /etc/osbs.conf
     fi
 
-    CAPACITY=${CAPACITY:"8.0"}
+    CAPACITY=${CAPACITY:-8.0}
     koji -c /opt/koji-clients/kojiadmin/config edit-host --capacity=$CAPACITY kojibuilder
 
     sed -i "s/koji_parent/koji_parent-disabled/g" /usr/share/osbs/prod_inner.json

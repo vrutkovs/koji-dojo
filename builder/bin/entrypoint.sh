@@ -60,8 +60,7 @@ install_osbs_client() {
     python setup.py install
     mkdir -p /usr/share/osbs
     cp inputs/* /usr/share/osbs
-    sed -i "s/koji_parent/koji_parent-disabled/g" /usr/share/osbs/prod_inner.json
-    sed -i "s/koji_parent/koji_parent-disabled/g" /usr/share/osbs/orchestrator*
+
 }
 
 install_kcb() {
@@ -91,6 +90,9 @@ update_buildroot(){
 
     CAPACITY=${CAPACITY:8.0}
     koji -c /opt/koji-clients/kojiadmin/config edit-host --capacity=$CAPACITY kojibuilder
+
+    sed -i "s/koji_parent/koji_parent-disabled/g" /usr/share/osbs/prod_inner.json
+    sed -i "s/koji_parent/koji_parent-disabled/g" /usr/share/osbs/orchestrator*
 }
 
 update_kojid(){

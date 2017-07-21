@@ -94,7 +94,7 @@ update_buildroot(){
     koji -c /opt/koji-clients/kojiadmin/config edit-host --capacity=$CAPACITY kojibuilder
 
     sed -i "s/koji_parent/koji_parent-disabled/g" /usr/share/osbs/prod_inner.json
-    sed -i "s/koji_parent/koji_parent-disabled/g" /usr/share/osbs/orchestrator*
+    sed -i "s/koji_parent/koji_parent-disabled/g" /usr/share/osbs/orchestrator* || true
 }
 
 update_kojid(){

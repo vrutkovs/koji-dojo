@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -ex
 
 wait_for_koji_hub_to_start() {
     while true; do

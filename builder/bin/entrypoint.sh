@@ -38,8 +38,10 @@ configure_builder() {
 }
 
 install_osbs_updates() {
-    curl -kL https://copr.devel.redhat.com/coprs/vrutkovs/osbs/repo/rhel-6/vrutkovs-osbs-rhel-6.repo -o /etc/yum.repos.d/osbs-updates.repo
-    echo -e "\nsslverify=0" >> /etc/yum.repos.d/osbs-updates.repo
+    if [ -n "${ENGREPOS}" ]; then
+      curl -kL https://copr.devel.redhat.com/coprs/vrutkovs/osbs/repo/rhel-6/vrutkovs-osbs-rhel-6.repo -o /etc/yum.repos.d/osbs-updates.repo
+      echo -e "\nsslverify=0" >> /etc/yum.repos.d/osbs-updates.repo
+    fi
     yum install -y osbs-client koji-containerbuild koji-containerbuild-builder
 }
 

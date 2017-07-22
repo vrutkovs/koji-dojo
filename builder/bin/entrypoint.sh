@@ -38,13 +38,14 @@ configure_builder() {
 }
 
 install_osbs_updates() {
+    curl -kL https://copr.devel.redhat.com/coprs/vrutkovs/osbs/repo/rhel-6/vrutkovs-osbs-rhel-6.repo -o /etc/yum.repos.d/osbs-updates.repo
+    echo -e "\nsslverify=0" >> /etc/yum.repos.d/osbs-updates.repo
+    curl -kL http://file.brq.redhat.com/vrutkovs/eng-rhel-6.repo -o /etc/yum.repos.d/eng-rhel-6.repo
+    YUM_POSTFIX=""
     if [ -n "${ENGREPOS}" ]; then
-      curl -kL https://copr.devel.redhat.com/coprs/vrutkovs/osbs/repo/rhel-6/vrutkovs-osbs-rhel-6.repo -o /etc/yum.repos.d/osbs-updates.repo
-      echo -e "\nsslverify=0" >> /etc/yum.repos.d/osbs-updates.repo
-    else
-      curl -kL http://file.brq.redhat.com/vrutkovs/eng-rhel-6.repo -o /etc/yum.repos.d/eng-rhel-6.repo
+      YUM_POSTFIX="--disablerepo vrutkovs-osbs"
     fi
-    yum install -y osbs-client koji-containerbuild koji-containerbuild-builder
+    yum install -y osbs-client koji-containerbuild koji-containerbuild-builder $YUM_POSTFIX
 }
 
 install_osbs_client() {
